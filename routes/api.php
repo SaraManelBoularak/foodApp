@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\addAppUserController;
+
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::view('/add','addclient');
-Route::post('/add',[appUserController::class,'addData']);
+//Route::view('/add','addclient');
+//Route::post('/add',[appUserController::class,'addData']);
 //Route::post('add', 'App\Http\Controllers\appUserController@addData');
  
-Route::view('/addM','addmanager');
+//Route::view('/addM','addmanager');
 //Route::post('/addM',[appUserController::class,'addData']);
 
-Route::view('/addU','addappuser');
-Route::post('/addU',[appUserController::class, 'addData']);
+//Route::view('/addU','addappuser');
+//Route::post('/addU',[appUserController::class,'addData']);
+ 
+Route::post('register', 'App\Http\Controllers\AuthController@register');
+Route::view('register', 'AddUser');
