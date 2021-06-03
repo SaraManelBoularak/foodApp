@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Restaurant;
 
-class UserController extends Controller
+class RestaurantController extends Controller
 {
+    //
     /**
      * Display a listing of the resource.
      *
@@ -14,11 +16,10 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = DB::table('users')->get();
+        $restaurant = Restaurant::all();
+        return json_encode($restaurant);
         
-        foreach ($users as $user) {
-            echo $user->email;
-        }
+        
     }
 
     /**
@@ -86,5 +87,5 @@ class UserController extends Controller
     {
         //
     }
-}
 
+}

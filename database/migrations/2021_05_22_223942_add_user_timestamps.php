@@ -14,9 +14,12 @@ class AddUserTimestamps extends Migration
     public function up()
     {
         //
-        Schema::table ('users', function (Blueprint $table) {
-            $table->timestamps();//if not used, create a new file 
-        });    
+        if (!Schema::hasColumn('users', 'created_at', 'updated_at')){
+            Schema::table ('users', function (Blueprint $table) {
+                $table->timestamps();//if not used, create a new file 
+            });    
+        }
+        
 
     }
 

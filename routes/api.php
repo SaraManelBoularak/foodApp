@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\RestaurantController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,4 +37,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 
-
+//Route::apiResource('orders','OrderController');
+//Route::apiResource('restos','RestaurantController');
+//Route::middleware('restos')->group(base_path('App\Http\Controllers\RestaurantController;'));

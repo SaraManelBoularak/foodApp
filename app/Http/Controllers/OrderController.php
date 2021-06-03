@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //can ba used to register user but we made a new AuthController
+        return 'create order';
     }
 
     /**
@@ -39,7 +39,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->header('Content-type')=='application/json'){
+            $email = $request['email'];
+            $password =$request['password']; 
+        }else{
+            $email = $request->input('email');
+            $password = $request->input('password');
+        }
+        
+        DB::table('users')->insert(
+            ['email' => $email,
+            'password' => $password]
+        );
+        return response('Data stored successfully', 200);
     }
 
     /**
@@ -48,9 +60,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) 
     {
         //
+        return 'show order '.$id;
     }
 
     /**
@@ -62,6 +75,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        return 'edit order '.$id;
     }
 
     /**
@@ -74,6 +88,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        return 'update order '.$id;
     }
 
     /**
@@ -85,6 +100,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        return 'destroy order '.$id;
     }
 }
-
