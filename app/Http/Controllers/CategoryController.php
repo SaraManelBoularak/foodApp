@@ -7,5 +7,5 @@ use App\category;
 
 class CategoryController extends Controller
 {
-    //
+  
 }

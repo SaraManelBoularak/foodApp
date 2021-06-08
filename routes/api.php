@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,10 +34,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::view('/addU','addappuser');
 //Route::post('/addU',[appUserController::class,'addData']);
+
+
  
-Route::post('register', 'App\Http\Controllers\AuthController@register');
-Route::post('login', 'App\Http\Controllers\AuthController@login');
+// Route::group(['middleware' => ['api']], function () {
+//     // your routes here
+
+//   });
+ 
+
+  Route::post('register', 'App\Http\Controllers\AuthController@register'); //signup user
+  Route::post('login', 'App\Http\Controllers\AuthController@login');//login user
+  Route::post('authusers', 'App\Http\Controllers\AuthController@showAuth'); //show the authentificated user
+  Route::post('logout', 'App\Http\Controllers\AuthController@logout'); //logout 
 
 //Route::apiResource('orders','OrderController');
 //Route::apiResource('restos','RestaurantController');
 //Route::middleware('restos')->group(base_path('App\Http\Controllers\RestaurantController;'));
+ 
+
+Route::post('newrestau', 'App\Http\Controllers\RestaurantController@create'); //create a restaurant
+Route::post('restaulist', 'App\Http\Controllers\RestaurantController@list'); //restaurants list
+
+Route::post('users', 'App\Http\Controllers\UserController@index'); //users list

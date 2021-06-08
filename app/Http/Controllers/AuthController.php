@@ -8,17 +8,27 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 class AuthController extends Controller
 {
     //
 
+    public function __construst(){
+        //authaurization 
+        $this->middleware('auth:sanctum')->only(['showAuth']); 
+        //$this->user = Auth::user();
+         
+          //return $next($request);
+    }
+   
     public function register (Request $request){
         //
         $request->validate([
            'email' => 'required|email',
            'password' => 'required',
+           //'type'=> 'required',
         ]); 
 
         //check if user already exists 
@@ -68,9 +78,35 @@ class AuthController extends Controller
        }
 
 
-    public function logout (){
-        //
-    }
+       public function logout(Request $request)
+       {
+           Auth::logout();
+       
+           $request->session()->invalidate();
+       
+           $request->session()->regenerateToken();
+       
+           return redirect('/');
+       }
+    
 
+    public function showAuth(){
+        //
+        //all authentificated users
+        $user = Auth::user();
+        //$id = Auth::id();
+        
+        
+        
+        if($user!=null){
+
+            foreach ($user as $user) {
+                echo $user->email.' '.$user->type;
+                echo "<br>";
+            }
+        }else {echo 'no users are authentificated yet';}
+        
+       // echo "<br>";
+    }
 
 }

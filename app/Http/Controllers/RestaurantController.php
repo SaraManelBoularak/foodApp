@@ -3,23 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Restaurant;
+use App\Models\Restaurant;
+use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\Auth; //to check if the user who's making the restau is logged in 
+
+//use App\Http\Controllers\UserController;
+
+
+
 
 class RestaurantController extends Controller
 {
+
+    public function __construst(){
+        //authaurization 
+        $this->middleware('auth:sanctum'); //->only(['create']);
+    
+    }
+
+
     //
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list()
     {
-        //
-        $restaurant = Restaurant::all();
-        return json_encode($restaurant);
-        
-        
+        //$restaurant = Restaurant->all(); 
+        $restaurant = DB::table('restaurants')->get(); //bro help fix this ^^
+        return json_encode($restaurant);   
     }
 
     /**
@@ -27,9 +40,25 @@ class RestaurantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //can ba used to register user but we made a new AuthController
+        //can ba used to register restaurant for a manager
+        
+        /*$user =DB::table('users')->get();
+        if($user['type']=='manager'){
+           //
+        }*/
+        return $request->user();
+        $id= $request->user()->id; 
+
+        $restaurant= new Restaurant;
+
+        $restaurant->name= $request->name;
+        $restaurant->phone= $request->phone;
+        $restaurant->adress= $request->adress;
+        $restaurant->user_id= $id;
+        
+        $restaurant->save();
     }
 
     /**
