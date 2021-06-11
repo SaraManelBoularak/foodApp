@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class RestaurantController extends Controller
 {
 
-    public function __construst(){
+    public function __construct(){ 
         //authaurization 
         $this->middleware('auth:sanctum'); //->only(['create']);
     
@@ -31,7 +31,7 @@ class RestaurantController extends Controller
     public function list()
     {
         //$restaurant = Restaurant->all(); 
-        $restaurant = DB::table('restaurants')->get(); //bro help fix this ^^
+        $restaurant = DB::table('restaurants')->get(); //bro helped fix this ^^
         return json_encode($restaurant);   
     }
 
@@ -42,23 +42,7 @@ class RestaurantController extends Controller
      */
     public function create(Request $request)
     {
-        //can ba used to register restaurant for a manager
-        
-        /*$user =DB::table('users')->get();
-        if($user['type']=='manager'){
-           //
-        }*/
-        return $request->user();
-        $id= $request->user()->id; 
-
-        $restaurant= new Restaurant;
-
-        $restaurant->name= $request->name;
-        $restaurant->phone= $request->phone;
-        $restaurant->adress= $request->adress;
-        $restaurant->user_id= $id;
-        
-        $restaurant->save();
+       //
     }
 
     /**
@@ -70,6 +54,30 @@ class RestaurantController extends Controller
     public function store(Request $request)
     {
         //
+         //can ba used to register restaurant for a manager
+        
+        /*$user =DB::table('users')->get();
+        if($user['type']=='manager'){
+           //
+        }*/
+       // return $request->user();
+       $id = $request->user()->id; 
+       // $type= $request->user()->type;    //keep comments till I change enum in column
+      
+        //if($type="manager"){}
+        //else if($type="client"){
+        //echo "you cannot add a meal if you're a client";
+        //}
+
+        $restaurant= new Restaurant;
+
+        $restaurant->name= $request->name;
+        $restaurant->phone= $request->phone;
+        $restaurant->adress= $request->adress;
+        $restaurant->user_id= $id;
+        
+        $restaurant->save();
+
     }
 
     /**

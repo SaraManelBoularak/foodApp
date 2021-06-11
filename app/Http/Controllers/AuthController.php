@@ -15,14 +15,6 @@ class AuthController extends Controller
 {
     //
 
-    public function __construst(){
-        //authaurization 
-        $this->middleware('auth:sanctum')->only(['showAuth']); 
-        //$this->user = Auth::user();
-         
-          //return $next($request);
-    }
-   
     public function register (Request $request){
         //
         $request->validate([
@@ -32,7 +24,7 @@ class AuthController extends Controller
         ]); 
 
         //check if user already exists 
-        $user= User::where('email', $request->email)->first();
+        $user= User::where('email', $request->email)->first(); 
         if ($user){
             /*throw ValidationException::withMessage([
                'email' => ['The provided email already exists.']
@@ -93,7 +85,7 @@ class AuthController extends Controller
     public function showAuth(){
         //
         //all authentificated users
-        $user = Auth::user();
+        $user = Auth::user(); //wrong call, we used sanctum and not integrated laravel authentification
         //$id = Auth::id();
         
         
