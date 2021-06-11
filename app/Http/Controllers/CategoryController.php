@@ -52,6 +52,7 @@ class CategoryController extends Controller
       // $category->name = 'Paris to London';
 
       // $category->save();
+      
       $id = $request->input('id');
       $category = Category::find($id);
       $name = $request->input('name');

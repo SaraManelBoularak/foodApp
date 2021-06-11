@@ -20,7 +20,7 @@ class CreateRestaurantsTable extends Migration
                 $table->string('workHours')->nullable();
                 $table->integer('phone');
                 $table->string('photo')->nullable();
-                $table->enum('state', array('Open', 'Closed'))->nullable();
+                //$table->enum('state', array('Open', 'Closed'))->nullable();
                 $table->string('adress');
                 $table->integer('rate')->nullable();
                 $table->timestamps();

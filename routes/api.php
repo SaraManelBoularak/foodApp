@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('newrestau', 'App\Http\Controllers\RestaurantController@store'); //create a restaurant ->requires login
 Route::post('restaulist', 'App\Http\Controllers\RestaurantController@list'); //restaurants list ->requires login
-
+Route::post('updaterestau', 'App\Http\Controllers\RestaurantController@update');
 
 
 Route::post('newcategory','App\Http\Controllers\CategoryController@store');//new category

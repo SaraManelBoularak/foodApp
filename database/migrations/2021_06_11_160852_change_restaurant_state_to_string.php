@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeToUsersTable extends Migration
+class ChangeRestaurantStateToString extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class AddTypeToUsersTable extends Migration
      */
     public function up()
     {
-
-        if(!Schema::hasColumn('users','type')){
-            Schema::table('Users', function (Blueprint $table) {
-                $table->enum('type', array('client', 'manager'));
+     
+        if(!Schema::hasColumn('restaurants', 'status') ){
+            Schema::table('restaurants', function (Blueprint $table) {
+                $table->string('status')->nullable();
             });
         }
-      
+
     }
 
     /**
@@ -29,8 +29,8 @@ class AddTypeToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('Users', function (Blueprint $table) {
-          $table->dropColumn('type');
+        Schema::table('restaurant', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }

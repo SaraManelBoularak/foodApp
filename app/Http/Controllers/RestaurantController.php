@@ -109,9 +109,29 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $id = $request->input('id');
+      $restaurant = Restaurant::find($id);
+      
+      $name = $request->input('name');
+      $workHours = $request->input('workHours');
+      $phone = $request->input('phone');
+      $photo = $request->input('photo');
+      //$state = $request->input('state');
+      $adress = $request->input('adress');
+      //$rate = $request->input('rate');
+      
+
+      $restaurant->name = $name;
+      $restaurant->workHours= $workHours;
+      $restaurant->phone = $phone;
+      $restaurant->photo = $photo;
+      //$restaurant->state = $state;
+      $restaurant->adress = $adress;
+    //  $restaurant->rate = $rate;
+      
+      $restaurant->save();
     }
 
     /**

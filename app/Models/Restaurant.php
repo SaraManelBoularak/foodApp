@@ -20,7 +20,7 @@ class Restaurant extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'adress', 'user_id'
+        'name', 'phone', 'adress', 'user_id', 'workHours', 'photo', 'state',
     ];
 
     /**
