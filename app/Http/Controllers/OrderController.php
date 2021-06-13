@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -14,10 +15,10 @@ class OrderController extends Controller
     public function index()
     {
         //
-        $users = DB::table('users')->get();
+        $orders = DB::table('orders')->get();
         
-        foreach ($users as $user) {
-            echo $user->email;
+        foreach ($orders as $orders) {
+            echo $orders->state." ".$orders->user_id.' '.;
         }
     }
 

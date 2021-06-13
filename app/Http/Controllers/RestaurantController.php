@@ -118,18 +118,18 @@ class RestaurantController extends Controller
       $workHours = $request->input('workHours');
       $phone = $request->input('phone');
       $photo = $request->input('photo');
-      //$state = $request->input('state');
+      $status = $request->input('status');
       $adress = $request->input('adress');
-      //$rate = $request->input('rate');
+      $rate = $request->input('rate');
       
 
       $restaurant->name = $name;
       $restaurant->workHours= $workHours;
       $restaurant->phone = $phone;
       $restaurant->photo = $photo;
-      //$restaurant->state = $state;
+      $restaurant->status = $status;
       $restaurant->adress = $adress;
-    //  $restaurant->rate = $rate;
+      $restaurant->rate = $rate;
       
       $restaurant->save();
     }

@@ -32,8 +32,7 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         $category = DB::table('categories')->get();
 
         return json_encode($category); 
@@ -56,6 +55,7 @@ class CategoryController extends Controller
       $id = $request->input('id');
       $category = Category::find($id);
       $name = $request->input('name');
+     
       $category->name = $name;
 
       $category->save();

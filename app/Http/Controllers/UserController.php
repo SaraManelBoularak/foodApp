@@ -28,9 +28,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //function that displays all users
     {
-        //function that displays all users
         $users = DB::table('users')->get();
         
         foreach ($users as $user) {
@@ -48,10 +47,11 @@ class UserController extends Controller
     {
         //can ba used to register user but we made a new AuthController
         //we'll use this to create a restaurant for the loged manager 
-        $user =DB::table('users')->get();
-        if($user['type']=='manager'){
-           //
-        }
+        // $user =DB::table('users')->get();
+        // if($user['type']=='manager'){
+        //    //
+        // }
+         
     }
 
     /**
