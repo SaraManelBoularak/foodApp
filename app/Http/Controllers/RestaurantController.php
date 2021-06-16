@@ -77,7 +77,7 @@ class RestaurantController extends Controller
         $restaurant->user_id= $id;
         
         $restaurant->save();
-
+        return response('Data stored successfully', 200);
     }
 
     /**

@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Order;
+use App\Models\Orderline;
+
+
 class OrderController extends Controller
 {
+
+    public function __construct(){ 
+        //authaurization 
+        $this->middleware('auth:sanctum'); //->only(['create']);
+    
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +29,7 @@ class OrderController extends Controller
         $orders = DB::table('orders')->get();
         
         foreach ($orders as $orders) {
-            echo $orders->state." ".$orders->user_id.' '.;
+            echo $orders->state." ".$orders->user_id." to deliver to: ".$orders->deliveryAdress;
         }
     }
 
@@ -29,7 +40,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return 'create order';
+        //return 'create order';
     }
 
     /**
@@ -38,20 +49,18 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        if($request->header('Content-type')=='application/json'){
-            $email = $request['email'];
-            $password =$request['password']; 
-        }else{
-            $email = $request->input('email');
-            $password = $request->input('password');
-        }
+    public function store(Request $request){   
+        $id = $request->user()->id;
+        $order= new Order; 
+
+        $order->user_id= $id;
+
+        $order->deliveryAdress= $request->deliveryAdress;
+        $order->restaurant_id= $request->restaurant_id;
+        $order->state= "registered"; //possible states: registered, received, on the way, delivered
         
-        DB::table('users')->insert(
-            ['email' => $email,
-            'password' => $password]
-        );
+        $order->save();
+  
         return response('Data stored successfully', 200);
     }
 

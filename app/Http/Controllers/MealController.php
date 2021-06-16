@@ -34,12 +34,12 @@ class MealController extends Controller
          $meal->price= $request->price;
          $meal->photo= $request->photo;
          $meal->category_id= $request->category_id;
-         //$meal->restaurant_id= $request->restaurant_id;
          $meal->restaurant_id= $restaurant_id;
          
 
  
          $meal->save();
+         return response('Data stored successfully', 200);
     }
 
     /**

@@ -74,3 +74,7 @@ Route::post('editmeal','App\Http\Controllers\MealController@update');//edit meal
 Route::post('deletemeal','App\Http\Controllers\MealController@delete');//delete meal 
 
 Route::post('orders','App\Http\Controllers\OrderController@index');//orders list
+Route::post('neworder','App\Http\Controllers\OrderController@store');//new order
+
+
+Route::post('neworderline','App\Http\Controllers\OrderlineController@store');//new orderline
