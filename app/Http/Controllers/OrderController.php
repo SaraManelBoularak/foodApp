@@ -57,7 +57,8 @@ class OrderController extends Controller
 
         $order->deliveryAdress= $request->deliveryAdress;
         $order->restaurant_id= $request->restaurant_id;
-        $order->state= "registered"; //possible states: registered, received, on the way, delivered
+        $order->state= "registered"; /*possible states: registered, received, on the way, delivered;
+         in our case: registered, approved, declined since it's an ordering app*/
         
         $order->save();
   
@@ -73,7 +74,7 @@ class OrderController extends Controller
     public function show($id) 
     {
         //
-        return 'show order '.$id;
+        //return 'show order '.$id;
     }
 
     /**
@@ -85,7 +86,7 @@ class OrderController extends Controller
     public function edit($id)
     {
         //
-        return 'edit order '.$id;
+        //return 'edit order '.$id;
     }
 
     /**
@@ -98,7 +99,15 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return 'update order '.$id;
+        //update order for manager is changing its state from registered to approved or declined
+        $id = $request->input('id');
+        $category = Orders::find($id);
+        $name = $request->input('name');
+       
+        $category->name = $name;
+  
+        $category->save();
+      }
     }
 
     /**
@@ -110,6 +119,6 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
-        return 'destroy order '.$id;
+        //return 'destroy order '.$id;
     }
 }
