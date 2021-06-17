@@ -47,10 +47,44 @@ class MealController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-        $meal = DB::table('meals')->get();
+    public function index(Request $request){
+        
+        $type = $request->user()->type; 
 
-        return json_encode($meal); 
+
+        if($type=='manager'){
+          $id = $request->user()->id;
+          $restaurant=DB::table('restaurants')
+            ->where('user_id', $id)->first();
+          $restaurant_id= $restaurant->id;
+
+          
+            $meals = DB::table('meals')
+            ->where('restaurant_id', '=', $restaurant_id)
+            ->orderBy('category_id', 'asc')
+            ->get();
+  
+          
+             return json_encode($meals);    
+  
+            
+          
+
+        }
+        elseif($type=='client'){
+          $restaurant_id= $request->input('restaurant_id');
+
+          $meals = DB::table('meals')
+        ->where('restaurant_id', '=', $restaurant_id)
+        ->orderBy('category_id', 'asc')
+        ->get();
+
+        return json_encode($meals);    
+          
+        }
+        
+        
+       
     }
 
     
