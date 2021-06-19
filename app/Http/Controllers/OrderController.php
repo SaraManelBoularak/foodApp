@@ -12,9 +12,9 @@ use App\Models\Orderline;
 class OrderController extends Controller
 {
 
-    public function __construct(){ 
-        //authaurization 
-        $this->middleware('auth:sanctum'); //->only(['create']);
+    public function __construct(){
+        //authaurization to make authentification mendatory
+        $this->middleware('auth:sanctum'); 
     
     }
 
@@ -23,24 +23,39 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-        $orders = DB::table('orders')->get();
+    public function index(Request $request){
         
-        foreach ($orders as $orders) {
-            echo $orders->state." ".$orders->user_id." to deliver to: ".$orders->deliveryAdress;
-        }
-    }
+        //we use user_id to get manager's associated restaurant to get manager's orders
+        //and we use user_id simply to get client's orders       
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //return 'create order';
+        //we fetch user's type and id
+        $type = $request->user()->type; 
+        $user_id= $request->user()->id;
+
+        if($type=='manager'){  
+
+            $restaurant=DB::table('restaurants')
+              ->where('user_id', $user_id)->first();
+            
+            $restaurant_id= $restaurant->id;
+
+            $orders = DB::table('orders')
+              ->where('restaurant_id', '=', $restaurant_id)
+              ->orderBy('created_at', 'asc')
+              ->get();
+
+            }
+
+        elseif($type=='client'){
+
+            $orders = DB::table('orders')
+             ->where('user_id', '=', $user_id)
+             ->orderBy('created_at', 'asc')
+             ->get();
+
+          }
+         
+          return json_encode($orders);  
     }
 
     /**
@@ -51,74 +66,67 @@ class OrderController extends Controller
      */
     public function store(Request $request){   
         $id = $request->user()->id;
-        $order= new Order; 
+        $order = Order::create($request->all());
 
-        $order->user_id= $id;
-
-        $order->deliveryAdress= $request->deliveryAdress;
-        $order->restaurant_id= $request->restaurant_id;
-        $order->state= "registered"; /*possible states: registered, received, on the way, delivered;
-         in our case: registered, approved, declined since it's an ordering app*/
-        
-        $order->save();
-  
+        $meals = $request->input('meals', []);
+        $quantities = $request->input('quantities', []);
+        for ($meal=0; $meal < count($meals); $meal++) {
+            if ($meals[$meal] != '') {
+                $order->meals()->attach($meals[$meal], ['quantity' => $quantities[$meal]]);
+            }
+        }
         return response('Data stored successfully', 200);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) 
-    {
-        //
-        //return 'show order '.$id;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        //return 'edit order '.$id;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
-        //update order for manager is changing its state from registered to approved or declined
+        
         $id = $request->input('id');
-        $category = Orders::find($id);
-        $name = $request->input('name');
-       
-        $category->name = $name;
-  
-        $category->save();
-      }
+        $order = Order::find($id);
+        $type= $request->user()->type;
+
+
+        if($type=="manager"){ //update order for manager is changing its state from registered to approved or declined
+
+        $state = $request->input('state');
+        
+        $order->state = $state; //in the frontend the accept order button will set state to 'approved' and
+                                //the decline button will set state to 'declined' 
+        $order->save();
+
+        }elseif($type=="client"){ //update order for client is by adding his localisation
+            
+            $latitude = $request->input('latitude');
+            $longitude = $request->input('longitude');
+
+            $order->latitude = $latitude;
+            $order->longitude = $longitude;
+            
+            $order->save();
+
+        }
+
     }
+    
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-        //return 'destroy order '.$id;
+    public function destroy(Request $request){
+        
+        $id = $request->input('id');
+     
+        $order = Order::find($id);
+  
+        $order->delete();
     }
 }

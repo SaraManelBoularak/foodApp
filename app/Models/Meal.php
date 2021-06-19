@@ -15,7 +15,7 @@ class Meal extends Model
      * @var array
      */
     protected $fillable = [
-        'name','price','category_id','restaurant_id', 'photo'
+        'name','price','category_id','restaurant_id', 'photo',
     ];
 /**
      * The attributes that should be hidden for arrays.

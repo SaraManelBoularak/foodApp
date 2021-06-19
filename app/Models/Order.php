@@ -17,4 +17,9 @@ class Order extends Model
     protected $fillable = [
         'latitude', 'longitude', 'restaurant_id', 'user_id', 'state', 'paymentMethod',
         ];
+
+    public function meals(){ //used to link quantity and meal to order 
+        return $this->belongsToMany(Product::class)->withPivot(['quantity']);
+    }
+
 }

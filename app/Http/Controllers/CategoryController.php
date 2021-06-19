@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-//use App\Http\Controllers\Controller;
 use App\Models\category;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\DB;//in retrieving from db 
+use Illuminate\Support\Facades\DB;//for retrieving from db 
 
 class CategoryController extends Controller
 {
+  
+  //we dont need construct with authorization since this controller will be used by admin 
+
 
    /**
      * Store a new flight in the database.
@@ -18,7 +20,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-  public function store(Request $request){
+  public function store(Request $request){ //to store a new category row in db
         $category= new Category; 
 
         $category->name= $request->name;
@@ -33,26 +35,13 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index(){  //to retrive all the categories list
         $category = DB::table('categories')->get();
 
         return json_encode($category); 
     }
 
-    public function update(Request $request)
-    {
-     // $input = $request->all();
-
-      // $request->validate([
-      //   'name' => 'required|name',
-      //  ]);
-
-      // $category = Category::find(1);
-
-      // $category->name = 'Paris to London';
-
-      // $category->save();
-      
+    public function update(Request $request){ //to edit a specific row in db     
       $id = $request->input('id');
       $category = Category::find($id);
       $name = $request->input('name');
@@ -62,7 +51,7 @@ class CategoryController extends Controller
       $category->save();
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request){ //to delete a specific row from db
       $id = $request->input('id');
      
       $category = Category::find($id);

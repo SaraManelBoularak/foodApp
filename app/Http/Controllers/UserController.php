@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\Auth; //to check the users logged in
 class UserController extends Controller
 {
 
-    /*public function __construst(){
-        //authaurization 
-        $this->middleware('auth:sanctum'); 
-        $this->user = Auth::user();
-         
-          //return $next($request);
-    }*/
-    
     /**
      * Display a listing of the resource.
      *
@@ -46,12 +38,6 @@ class UserController extends Controller
     public function create()
     {
         //can ba used to register user but we made a new AuthController
-        //we'll use this to create a restaurant for the loged manager 
-        // $user =DB::table('users')->get();
-        // if($user['type']=='manager'){
-        //    //
-        // }
-         
     }
 
     /**

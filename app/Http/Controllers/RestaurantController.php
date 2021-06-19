@@ -5,22 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\DB;
-//use Illuminate\Support\Facades\Auth; //to check if the user who's making the restau is logged in 
-
-//use App\Http\Controllers\UserController;
-
-
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 
 class RestaurantController extends Controller
 {
 
     public function __construct(){ 
-        //authaurization 
+        //authaurization to make authentification mendatory 
         $this->middleware('auth:sanctum'); //->only(['create']);
     
     }
-
 
     //
     /**
@@ -28,21 +24,9 @@ class RestaurantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
-    {
-        //$restaurant = Restaurant->all(); 
-        $restaurant = DB::table('restaurants')->get(); //bro helped fix this ^^
+    public function list(){
+        $restaurant = DB::table('restaurants')->get(); 
         return json_encode($restaurant);   
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-       //
     }
 
     /**
@@ -51,24 +35,10 @@ class RestaurantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-         //can ba used to register restaurant for a manager
-        
-        /*$user =DB::table('users')->get();
-        if($user['type']=='manager'){
-           //
-        }*/
-       // return $request->user();
-       $id = $request->user()->id; 
-       // $type= $request->user()->type;    //keep comments till I change enum in column
-      
-        //if($type="manager"){}
-        //else if($type="client"){
-        //echo "you cannot add a meal if you're a client";
-        //}
+    public function store(Request $request){
 
+       $id = $request->user()->id; 
+       
         $restaurant= new Restaurant;
 
         $restaurant->name= $request->name;
@@ -77,29 +47,8 @@ class RestaurantController extends Controller
         $restaurant->user_id= $id;
         
         $restaurant->save();
+
         return response('Data stored successfully', 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -132,17 +81,38 @@ class RestaurantController extends Controller
       $restaurant->rate = $rate;
       
       $restaurant->save();
+
+      // Check if there is an image in the request
+      if ($request->hasFile('image')) {
+
+        $originalImage = $request->file('image');
+        
+        // Resize the image
+        $resizedImage = Image::make($originalImage);
+        $resizedImage->resize(null, 200, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $resizedImage->stream();
+
+        Storage::disk('local')->put('public/images/meal/' . $meal->id, $resizedImage, 'public');
+
+      }
+      return response($restaurant, 201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request){
+      //we request the id for the desired restaurant to delete
+      $id_res = $request->input('id');
+      //we get the row for that id
+      $restaurant = Restaurant::find($id_res);
+      //we delete that row
+      $restaurant->delete();
     }
 
 }

@@ -28,35 +28,13 @@ use App\Http\Controllers\MealController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 }); 
-//Route::view('/add','addclient');
-//Route::post('/add',[appUserController::class,'addData']);
-//Route::post('add', 'App\Http\Controllers\appUserController@addData');
- 
-//Route::view('/addM','addmanager');
-//Route::post('/addM',[appUserController::class,'addData']);
 
-//Route::view('/addU','addappuser');
-//Route::post('/addU',[appUserController::class,'addData']);
-
-
- 
-// Route::group(['middleware' => ['api']], function () {
-//     // your routes here
-
-//   });
- 
 
   Route::post('register', 'App\Http\Controllers\AuthController@register'); //signup user
   Route::post('login', 'App\Http\Controllers\AuthController@login');//login user
-  Route::post('authuser', 'App\Http\Controllers\AuthController@showAuth'); //show the authentificated user
   Route::post('logout', 'App\Http\Controllers\AuthController@logout'); //logout 
 
-  Route::post('users', 'App\Http\Controllers\UserController@index'); //users list (we dont need it, just testing)
-
-//Route::apiResource('orders','OrderController');
-//Route::apiResource('restos','RestaurantController');
-//Route::middleware('restos')->group(base_path('App\Http\Controllers\RestaurantController;'));
- 
+  Route::post('users', 'App\Http\Controllers\UserController@index'); //users list (we dont need it, just testing) 
 
 Route::post('newrestau', 'App\Http\Controllers\RestaurantController@store'); //create a restaurant ->requires login
 Route::post('restaulist', 'App\Http\Controllers\RestaurantController@list'); //restaurants list ->requires login
@@ -75,6 +53,12 @@ Route::post('deletemeal','App\Http\Controllers\MealController@delete');//delete 
 
 Route::post('orders','App\Http\Controllers\OrderController@index');//orders list
 Route::post('neworder','App\Http\Controllers\OrderController@store');//new order
-
+Route::post('updateorder','App\Http\Controllers\OrderController@update');//update order
 
 Route::post('neworderline','App\Http\Controllers\OrderlineController@store');//new orderline
+
+
+
+
+
+
